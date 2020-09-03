@@ -61,8 +61,38 @@ module.exports.registerUsersFace = async function(req, res){
   res.json({status: 'ok'})
 }
 
-module.exports.loginUser = async function(req, res){
-
+module.exports.loginUser = async function(req, res) {
+  const {email, password} = req.body
+  try {
+    const candidate = await User.findOne({email})
+    if (candidate) {
+      if (bcrypt.compareSync(password, candidate.password)) {
+        req.session.user = candidate
+        res.status(200).json({
+          success: true,
+          status: 'done',
+        })
+      } else {
+        res.status(409).json({
+          success: false,
+          status: 'password',
+          message: 'Password is incorrect'
+        })
+      }
+    } else {
+      res.status(404).json({
+        success: false,
+        status: 'user',
+        message: 'User is not found please check email'
+      })
+    }
+  } catch (e) {
+    res.status(500).json({
+      success: false,
+      status: 'error',
+      message: e
+    })
+  }
 }
 
 module.exports.loginUserFace = async function(req, res){

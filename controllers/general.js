@@ -17,3 +17,11 @@ module.exports.getRegistrationDefaultPage = function(req, res){
 module.exports.getFaceRecordingPage = function(req, res){
   res.render('face-recording-page')
 }
+
+module.exports.getLoginPage = function(req, res){
+  res.render('login-page')
+}
+
+module.exports.getFaceLoginPage = function(req, res){
+  res.render('login-face-page')
+}

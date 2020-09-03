@@ -1,0 +1,28 @@
+<script defer src="/js/login.js"></script>
+<div class="container mar-top">
+    <div class="container">
+        <div class="container">
+            <form id="form_login" method="post" action="/api/auth/login">
+                <div class="row margin-top-for-form">
+                    <div class="col s12 input-field">
+                        <input placeholder="Email" id="email" type="email"
+                               class="validate" name="email">
+                        <label for="email">Email</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 input-field">
+                        <input placeholder="Password" id="password"
+                               type="password"
+                               class="validate" name="password">
+                        <label for="password">Password</label>
+                    </div>
+                </div>
+                <button class="btn waves-effect waves-light" type="submit">
+                    Sign In
+                    <i class="material-icons right">send</i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
