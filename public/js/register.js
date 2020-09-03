@@ -1,5 +1,6 @@
 const form = document.querySelector('#form_registration')
 
+
 form.addEventListener('submit', registerUser)
 
 async function registerUser(ev) {
@@ -13,8 +14,12 @@ async function registerUser(ev) {
       value: password,
     }, action, method,
   } = ev.target
-  const body = {
+    const body = {
     email, username, password,
+  }
+  const btn = ev.target.registerBtn || ''
+  if (btn && btn.dataset.video){
+    body.haveVideo = true
   }
 
   const res = await fetch(action, {
@@ -33,7 +38,11 @@ async function registerUser(ev) {
         window.location = '/login'
       }, 1000)
     } else {
+      if (btn && btn.dataset.video){
+        window.location = '/face-recorder'
+      } else {
       window.location = '/'
+      }
     }
   } else {
     if (result.message.errors) {

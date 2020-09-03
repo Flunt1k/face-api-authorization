@@ -13,3 +13,7 @@ module.exports.getRegistrationFacePage = function(req, res){
 module.exports.getRegistrationDefaultPage = function(req, res){
   res.render('registration-default-page')
 }
+
+module.exports.getFaceRecordingPage = function(req, res){
+  res.render('face-recording-page')
+}

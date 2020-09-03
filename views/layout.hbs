@@ -27,12 +27,18 @@
 <nav>
     <div class="nav-wrapper green accent-3">
         <a href="/" class="brand-logo">Chat</a>
-        <ul class="right hide-on-med-and-down">
-            <li><a href="/">Home</a></li>
-            <li><a href="/registration">Registration</a></li>
-            <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Dropdown<i
-                    class="material-icons right">arrow_drop_down</i></a></li>
-        </ul>
+    <ul class="right hide-on-med-and-down">
+            <li><a href="/">Главная</a></li>
+        {{#if user}}
+            <li><a href="/profile">Профиль</a></li>
+            <li><a href="/api/auth/logout">Выйти</a></li>
+        {{else}}
+
+                <li><a href="/registration">Регистрация</a></li>
+                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Вход<i
+                        class="material-icons right">arrow_drop_down</i></a></li>
+        {{/if}}
+            </ul>
     </div>
 </nav>
 {{{body}}}
