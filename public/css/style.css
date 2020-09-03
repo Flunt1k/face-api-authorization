@@ -1,0 +1,17 @@
+.brand-logo {
+    margin-left: 15px;
+}
+
+ul.dropdown-content li a {
+    color: #000; /* no need for !important :) */
+}
+
+.mar-top {
+    margin-top: 40px;
+}
+
+.center {
+    text-align: center;
+}
+
+
