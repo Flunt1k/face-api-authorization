@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const fs = require('fs').promises
 const path = require('path')
+const io = require('../server')
 
 const User = require('../models/User')
 const Data = require('../models/Data')
@@ -69,6 +70,7 @@ module.exports.loginUser = async function(req, res) {
     if (candidate) {
       if (bcrypt.compareSync(password, candidate.password)) {
         req.session.user = candidate
+        
         res.status(200).json({
           success: true,
           status: 'done',
@@ -115,6 +117,7 @@ module.exports.loginUserFace = async function(req, res){
       if (answer._label !== 'unknown') {
         answer._label = faceBDData._label
         req.session.user = user
+
       }
       else res.json({
         status: false,

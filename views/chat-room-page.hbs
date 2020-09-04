@@ -1,5 +1,38 @@
-<div class="container">
+<script defer src="/js/chatRoom.js"></script>
+<link rel="stylesheet" href="/css/chat.css">
+<div class="wrapper" data-room="{{param}}">
     <div class="container">
-        123
+        <div class="left">
+            <div class="top">
+            </div>
+            <ul class="people">
+                {{#each users}}
+                    <li class="person" data-chat="person1">
+                        <span class="name">{{this.username}}</span>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="right">
+            <div class="chat active-chat" data-chat="person2">
+                <div class="conversation-start">
+                    {{#each chatMessages}}
+                        {{#compare this.sender ../user._id}}
+                            <div class="bubble you">
+                                {{message}}
+                            </div>
+                        {{else}}
+                            <div class="bubble me">
+                                {{message}}
+                            </div>
+                        {{/compare}}
+                    {{/each}}
+                </div>
+                <div class="write">
+                    <input type="text" id="msg"/>
+                    <a href="" class="write-link send"></a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

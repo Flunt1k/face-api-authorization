@@ -9,7 +9,7 @@ router.get('/registration/default', controller.getRegistrationDefaultPage)
 router.get('/face-recorder',sessionChekre, controller.getFaceRecordingPage)
 router.get('/login', controller.getLoginPage)
 router.get('/login/face', controller.getFaceLoginPage)
-router.get('/chatroom', controller.getChatRoomPage)
-
+router.get('/chatroom/:id', controller.getChatRoomPage)
+router.get('/chat-generator', controller.getGeneratorChatPage)
 
 module.exports = router

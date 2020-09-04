@@ -1,5 +1,9 @@
-module.exports.getWelcomePage = function(req, res){
-  res.render('welcome-page')
+const Chat = require('../models/chatSchema')
+const Message = require('../models/Message')
+
+module.exports.getWelcomePage =async function(req, res){
+  const chats = await Chat.find({})
+  res.render('welcome-page', {chats})
 }
 
 module.exports.getRegistrationPage = function(req, res){
@@ -26,6 +30,16 @@ module.exports.getFaceLoginPage = function(req, res){
   res.render('login-face-page')
 }
 
-module.exports.getChatRoomPage =function(req,res){
-  res.render('chat-room-page')
+module.exports.getChatRoomPage = async function(req,res){
+  const param = req.params.id
+  const chat = await Chat.findOne({_id: param})
+await chat.populate('users').execPopulate()
+await chat.populate('messages').execPopulate()
+  const users = chat.users
+  const chatMessages = chat.messages
+  res.render('chat-room-page', {param, users, chatMessages})
+}
+
+module.exports.getGeneratorChatPage = function(req, res){
+  res.render('create-chat-page')
 }

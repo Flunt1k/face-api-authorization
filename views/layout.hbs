@@ -9,20 +9,18 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     >
+    <script src="/socket.io/socket.io.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
     <link rel="stylesheet" href="/css/style.css">
-
-
     <script defer src="/js/navbar.js"></script>
     <title>Chat</title>
 </head>
 <body>
 <ul id="dropdown1" class="dropdown-content">
-    <li><a href="/login/default">Login via email</a></li>
+    <li><a href="/login/default">Войти</a></li>
     <li class="divider"></li>
-    <li><a href="/login/face">Login via face recognition</a></li>
+    <li><a href="/login/face">Войти по распознованию лица</a></li>
 </ul>
 <nav>
     <div class="nav-wrapper green accent-3">
@@ -30,7 +28,7 @@
     <ul class="right hide-on-med-and-down">
             <li><a href="/">Главная</a></li>
         {{#if user}}
-            <li><a href="/profile">Профиль</a></li>
+            <li><a href="/chat-generator">Создать чат комнату</a></li>
             <li><a href="/api/auth/logout">Выйти</a></li>
         {{else}}
 

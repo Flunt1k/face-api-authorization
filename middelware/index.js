@@ -8,6 +8,7 @@ module.exports = function(app) {
   const MongoStore = require('connect-mongo')(session)
   const cookieParser = require('cookie-parser')
   const keys = require('../keys/keys')
+  const hbs = require('hbs')
   const setLocals = require('../middelware/setLocals')
   const faceapi = require('face-api.js')
   const canvas = require('canvas')
@@ -16,18 +17,49 @@ module.exports = function(app) {
   const {Canvas, Image, ImageData} = canvas
   faceapi.env.monkeyPatch({Canvas, Image, ImageData})
 
-  mongoose.connect(keys.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+  hbs.registerHelper('compare', function(lvalue, operator, rvalue, options) {
+    var operators, result
+    if (arguments.length < 3) {
+      throw new Error('Handlerbars Helper \'compare\' needs 2 parameters')
+    }
+    if (options === undefined) {
+      options = rvalue
+      rvalue = operator
+      operator = '==='
+    }
+
+    operators = {
+      '==': function(l, r) { return l == r },
+      '===': function(l, r) { return l === r },
+      '!=': function(l, r) { return l != r },
+      '!==': function(l, r) { return l !== r },
+      '<': function(l, r) { return l < r },
+      '>': function(l, r) { return l > r },
+      '<=': function(l, r) { return l <= r },
+      '>=': function(l, r) { return l >= r },
+      'typeof': function(l, r) { return typeof l == r },
+    }
+
+    if (!operators[operator]) {
+      throw new Error('Handlerbars Helper \'compare\' doesn\'t know the operator ' + operator)
+    }
+
+    result = operators[operator](lvalue.toString(), rvalue.toString())
+
+    if (result) {
+      console.log(123)
+      return options.fn(this)
+    } else {
+      console.log(456)
+      return options.inverse(this)
+    }
+
   })
 
-  app.set('view engine', 'hbs')
-  app.set('views', path.join(__dirname,'..', 'views'))
-
-  app.use(session({
+  const sessionObject = session({
     store: new MongoStore({
       mongooseConnection: mongoose.connection,
-      ttl: 60*60*24
+      ttl: 60 * 60 * 24,
     }),
     name: 'user_sid',
     resave: false,
@@ -36,9 +68,19 @@ module.exports = function(app) {
     secret: 'face-api-chat',
     cookie: {
       httpOnly: true,
-      maxAge: 1000*60*60*24
-    }
-  }))
+      maxAge: 1000 * 60 * 60 * 24,
+    },
+  })
+
+  mongoose.connect(keys.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+
+  app.set('view engine', 'hbs')
+  app.set('views', path.join(__dirname, '..', 'views'))
+
+  app.use(sessionObject)
   app.use(logger('dev'))
   app.use(express.urlencoded({extended: true}))
   app.use(express.json({limit: '50mb'}))
@@ -46,4 +88,6 @@ module.exports = function(app) {
   app.use(cors())
   app.use(cookieParser())
   app.use(setLocals)
+
+  module.exports = sessionObject
 }
