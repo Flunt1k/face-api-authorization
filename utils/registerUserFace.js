@@ -13,7 +13,7 @@ function registerUserFace(name, userID) {
     faceapi.nets.faceLandmark68Net.loadFromDisk('./models_face_api'),
   ]).then(async () => {
     result = await getInfoAboutFace(name, userID)
-    return result[0]
+    return result
   })
 
   function getInfoAboutFace(name, userID) {
@@ -22,7 +22,7 @@ function registerUserFace(name, userID) {
         list.map(async name => {
           const arr = []
           try {
-            for (let i = 0; i <= 4; i++) {
+            for (let i = 0; i <= 5; i++) {
               const img = await canvas.loadImage(
                   `./${userID}/person-${userID}-${i}.png`)
               const detection = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()

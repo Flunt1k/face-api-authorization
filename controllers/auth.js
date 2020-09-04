@@ -3,8 +3,11 @@ const fs = require('fs').promises
 const path = require('path')
 
 const User = require('../models/User')
-const Data = require('../models/userFaceData')
+const Data = require('../models/Data')
 const registerUserFace = require('../utils/registerUserFace')
+const compareFace = require('../utils/comapreFace')
+
+
 
 
 module.exports.registerUser = async function(req, res) {
@@ -50,13 +53,11 @@ module.exports.registerUsersFace = async function(req, res){
   })
   await fs.mkdir(path.join(__dirname, '..', `${req.session.user._id}`))
   for (let i = 0; i < dataArray.length; i++) {
-    await fs.writeFile(`./${req.session.user._id}/person-${req.session.user._id}-${i}.png`, dataArray[i])
+    await fs.writeFile(path.join(__dirname, '..', `${req.session.user._id}`, `person-${req.session.user._id}-${i}.png`), dataArray[i])
   }
   const result = await registerUserFace(req.session.user.username, req.session.user._id)
-  await new Data({
-    user_id: req.session.user._id,
-    data: result
-  }).save()
+  const save =  new Data({data: result, user_id: req.session.user._id})
+  await save.save()
   await fs.rmdir(path.join(__dirname, '..', `${req.session.user._id}`), {recursive: true})
   res.json({status: 'ok'})
 }
@@ -96,6 +97,39 @@ module.exports.loginUser = async function(req, res) {
 }
 
 module.exports.loginUserFace = async function(req, res){
+  const {email, faceData} = req.body
+  const user = await User.findOne({email})
+  if (user) {
+    const id = user._id
+
+      const b64faceData = faceData.replace(/^data:image\/\w+;base64,/, "")
+      const bufferFaceData = new Buffer(b64faceData, 'base64')
+      await fs.mkdir(path.join(__dirname, '..', `login-${id}`))
+      await fs.writeFile(path.join(__dirname, '..', `login-${id}`, `login-photo${id}.png`), bufferFaceData)
+      const dataObject = await Data.findOne({user_id: id})
+      const faceBDData = dataObject.data[0]
+    const result = faceBDData._descriptors.map(desc => Float32Array.from(Object.values(desc)))
+      const answer = await compareFace(id, result)
+
+      await fs.rmdir(path.join(__dirname, '..', `login-${id}`), {recursive: true})
+      if (answer._label !== 'unknown') {
+        answer._label = faceBDData._label
+        req.session.user = user
+      }
+      else res.json({
+        status: false,
+        message: 'Это не вы!!!'
+      })
+      res.json({
+        status: true,
+        answer
+      })
+    } else {
+    res.status(404).json({
+      status: false,
+      message: 'Пользователь не создан!'
+    })
+  }
 
 }
 

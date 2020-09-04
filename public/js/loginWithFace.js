@@ -1,6 +1,6 @@
 let width = 1280
 let height = 0
-let counter = 0
+
 
 let streaming = false
 
@@ -39,44 +39,37 @@ function startup() {
 
   startbutton.addEventListener('click', async function(ev) {
     ev.preventDefault()
-
-    new Promise((resolve, reject) => {
-      const dataArray = []
-      const interval = setInterval(() => {
-        if (counter === 5) {
-          resolve(dataArray)
-          clearInterval(interval)
-        }
-        console.log(counter)
-        takepicture(dataArray)
-      }, 1000)
-    }).then(result => {
-      counter = 0
-      console.log(result)
-      fetch('api/auth/face-registration', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({dataArray: result}),
-      }).then(res => res.json()).then(res => {
-        console.log(res)
-        if (res.status === 'ok') document.location = '/'
-      })
-    })
+    takepicture()
   }, false)
 }
 
+function takepicture() {
 
-function takepicture(dataArray) {
   const context = canvas.getContext('2d')
+  const email = document.querySelector('#email').value
   if (width && height) {
     canvas.width = width
     canvas.height = height
     context.drawImage(video, 0, 0, width, height)
-    const data = canvas.toDataURL('image/png')
-    dataArray.push(data)
-    counter += 1
+    const faceData = canvas.toDataURL('image/png')
+    const body = {
+      faceData, email
+    }
+    console.log(body)
+    fetch('/api/auth/face-auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }).then(res => res.json()).then(res => {
+      console.log(res)
+    if (res.status && res.answer._label !== 'unknown') {
+        window.location = '/'
+      } else {
+      M.toast({html: res.message, classes: 'rounded'})
+    }
+    })
   }
 }
 

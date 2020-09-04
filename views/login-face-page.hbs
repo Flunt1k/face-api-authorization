@@ -1,0 +1,21 @@
+<script src="/js/loginWithFace.js"></script>
+<div class="container mar-top">
+    <div class="container">
+        <div class="container">
+            <div class="col s12 input-field">
+                <input placeholder="Email" id="email" type="email"
+                       class="validate" name="email">
+                <label for="email">Email</label>
+            </div>
+        </div>
+    </div>
+    <div class="camera">
+        <video id="video">Video stream not available.</video>
+        <button class="btn waves-effect waves-light startbutton" type="submit">
+            Войти
+            <i class="material-icons right">videocam</i>
+        </button>
+    </div>
+    <canvas id="canvas" hidden>
+    </canvas>
+</div>

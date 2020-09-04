@@ -25,3 +25,7 @@ module.exports.getLoginPage = function(req, res){
 module.exports.getFaceLoginPage = function(req, res){
   res.render('login-face-page')
 }
+
+module.exports.getChatRoomPage =function(req,res){
+  res.render('chat-room-page')
+}
