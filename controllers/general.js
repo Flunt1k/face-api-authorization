@@ -35,9 +35,8 @@ module.exports.getChatRoomPage = async function(req,res){
   const chat = await Chat.findOne({_id: param})
 await chat.populate('users').execPopulate()
 await chat.populate('messages').execPopulate()
-  const users = chat.users
   const chatMessages = chat.messages
-  res.render('chat-room-page', {param, users, chatMessages})
+  res.render('chat-room-page', {param, chatMessages})
 }
 
 module.exports.getGeneratorChatPage = function(req, res){

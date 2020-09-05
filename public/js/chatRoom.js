@@ -29,17 +29,23 @@ async function sendMessage(e){
 }
 
 socket.on('message', (message) => {
+
   const msg = document.createElement('div')
   msg.classList.add('bubble', 'me')
   msg.textContent = message
   container.append(msg)
 })
 
-socket.on('addUserToList', (username) => {
-  const li = document.createElement('li', username)
+socket.on('addUserToList', (users) => {
+  console.log(users)
+  container.innerHTML = ''
+  users.forEach(user => {
+  const li = document.createElement('li', user.username)
   li.classList.add('person')
-  li.textContent = username
+  li.textContent = user.username
   peopleContainer.append(li)
+  })
+
 })
 
 socket.on('userDisconnect', (username) => {

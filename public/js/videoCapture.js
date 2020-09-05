@@ -39,7 +39,7 @@ function startup() {
 
   startbutton.addEventListener('click', async function(ev) {
     ev.preventDefault()
-
+    startbutton.disabled = true
     new Promise((resolve, reject) => {
       const dataArray = []
       const interval = setInterval(() => {
@@ -76,6 +76,7 @@ function takepicture(dataArray) {
     context.drawImage(video, 0, 0, width, height)
     const data = canvas.toDataURL('image/png')
     dataArray.push(data)
+    M.toast({html: counter+1, classes: 'rounded'})
     counter += 1
   }
 }

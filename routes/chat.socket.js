@@ -10,8 +10,10 @@ module.exports.listen = function(io) {
       console.log(currentChat.users.includes(session.user._id.toString()))
       if (!currentChat.users.includes(session.user._id)) currentChat.users.push(session.user._id)
       console.log(currentChat)
+      await currentChat.populate('users').execPopulate()
+      console.log(currentChat)
       await currentChat.save()
-      socket.broadcast.emit('addUserToList', session.user.username)
+    io.emit('addUserToList', currentChat.users)
     })
 
     console.log('user connected')

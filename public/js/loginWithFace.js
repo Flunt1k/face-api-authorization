@@ -39,6 +39,7 @@ function startup() {
 
   startbutton.addEventListener('click', async function(ev) {
     ev.preventDefault()
+    startbutton.disabled = true
     takepicture()
   }, false)
 }
@@ -56,6 +57,7 @@ function takepicture() {
       faceData, email
     }
     console.log(body)
+    M.toast({html: 'Ожидайте!', classes: 'rounded'})
     fetch('/api/auth/face-auth', {
       method: 'POST',
       headers: {
@@ -67,6 +69,7 @@ function takepicture() {
     if (res.status && res.answer._label !== 'unknown') {
         window.location = '/'
       } else {
+      startbutton.disabled = false
       M.toast({html: res.message, classes: 'rounded'})
     }
     })

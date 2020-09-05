@@ -2,6 +2,10 @@
     margin-left: 15px;
 }
 
+.dropdown-trigger{
+    width: 200px;
+}
+
 ul.dropdown-content li a {
     color: #000; /* no need for !important :) */
 }

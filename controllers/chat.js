@@ -6,7 +6,7 @@ module.exports.createChat =async function(req ,res){
     const newChat = new Chat({
       name: chat,
       messages: [],
-      users: [req.session.user._id],
+      users: [],
     })
     await newChat.save()
     res.json({
