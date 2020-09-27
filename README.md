@@ -9,7 +9,7 @@
 
 ### Приложение
 
-![Вход](readMeAssests/Screen Shot 2020-09-27 at 12.55.04 PM.png)
-![Регистрация](readMeAssests/Screen Shot 2020-09-27 at 12.55.15 PM.png)
-![Ввод данных](readMeAssests/Screen Shot 2020-09-27 at 12.55.35 PM.png)
-![Вход](readMeAssests/Screen Shot 2020-09-27 at 12.56.07 PM.png)
+![Вход](readMeAssests/login.png)
+![Регистрация](readMeAssests/registation.png)
+![Ввод данных](readMeAssests/registration_with_face.png)
+![Вход](readMeAssests/face_detection_page.png)
