@@ -55,6 +55,10 @@ module.exports = function(app) {
     }
 
   })
+  mongoose.connect(keys.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
 
   const sessionObject = session({
     store: new MongoStore({
@@ -65,17 +69,13 @@ module.exports = function(app) {
     resave: false,
     saveUninitialized: false,
     rolling: true,
-    secret: 'face-api-chat',
+    secret: 'face-api-auth',
     cookie: {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24,
     },
   })
 
-  mongoose.connect(keys.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
 
   app.set('view engine', 'hbs')
   app.set('views', path.join(__dirname, '..', 'views'))
@@ -89,5 +89,4 @@ module.exports = function(app) {
   app.use(cookieParser())
   app.use(setLocals)
 
-  module.exports = sessionObject
 }

@@ -47,12 +47,10 @@ function startup() {
           resolve(dataArray)
           clearInterval(interval)
         }
-        console.log(counter)
         takepicture(dataArray)
       }, 1000)
     }).then(result => {
       counter = 0
-      console.log(result)
       fetch('api/auth/face-registration', {
         method: 'POST',
         headers: {
@@ -60,7 +58,6 @@ function startup() {
         },
         body: JSON.stringify({dataArray: result}),
       }).then(res => res.json()).then(res => {
-        console.log(res)
         if (res.status === 'ok') document.location = '/'
       })
     })
